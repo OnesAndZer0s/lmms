@@ -27,8 +27,9 @@
 #ifndef AUTOMATION_PATTERN_H
 #define AUTOMATION_PATTERN_H
 
-#include <QtCore/QMap>
-#include <QtCore/QPointer>
+#include <QMap>
+#include <QPair>
+#include <QPointer>
 
 #include "AutomationNode.h"
 #include "TrackContentObject.h"
@@ -47,11 +48,18 @@ public:
 	{
 		DiscreteProgression,
 		LinearProgression,
-		CubicHermiteProgression
+		CubicHermiteProgression,
+		BezierProgression
 	} ;
 
+<<<<<<< HEAD
 	typedef QMap<int, AutomationNode> timeMap;
 	typedef QVector<QPointer<AutomatableModel>> objectVector;
+=======
+	typedef QMap<int, float> timeMap;
+	typedef QMap<int, QPair<int, float> > controlPointTimeMap;
+	typedef QVector<QPointer<AutomatableModel> > objectVector;
+>>>>>>> feature/bezier
 
 	AutomationPattern( AutomationTrack * _auto_track );
 	AutomationPattern( const AutomationPattern & _pat_to_copy );
@@ -93,10 +101,23 @@ public:
 		const bool ignoreSurroundingPoints = true
 	);
 
+<<<<<<< HEAD
 	void removeNode(const TimePos & time);
 	void removeNodes(const int tick0, const int tick1);
 
 	void resetNodes(const int tick0, const int tick1);
+=======
+	TimePos putControlPoint( timeMap::const_iterator it,
+						const float _value);
+
+	TimePos putControlPoint(timeMap::const_iterator it,
+						const int time, const float _value);
+
+	TimePos putControlPoint(timeMap::const_iterator it,
+					const int time, const float _value, const bool flip);
+
+	void removeValue( const TimePos & time );
+>>>>>>> feature/bezier
 
 	void recordValue(TimePos time, float value);
 
@@ -105,7 +126,12 @@ public:
 				const bool quantPos = true,
 				const bool controlKey = false );
 
+	TimePos setControlPointDragValue( const TimePos & _time, const float _value, const int _x,
+						   const bool _quant_pos = true );
+
 	void applyDragValue();
+
+	void flipControlPoint(bool flip);
 
 
 	bool isDragging() const
@@ -123,6 +149,40 @@ public:
 		return m_timeMap;
 	}
 
+<<<<<<< HEAD
+=======
+	inline const timeMap & getTangents() const
+	{
+		return m_tangents;
+	}
+
+	inline timeMap & getTangents()
+	{
+		return m_tangents;
+	}
+
+	inline const controlPointTimeMap & getControlPoints() const
+	{
+		return m_controlPoints;
+	}
+
+	inline controlPointTimeMap & getControlPoints()
+	{
+		return m_controlPoints;
+	}
+
+	// This is for getting the node of the control point that is being dragged
+	inline const timeMap::ConstIterator & getControlPointNode() const
+	{
+		return m_oldControlPointNode;
+	}
+
+	inline  timeMap::ConstIterator & getControlPointNode()
+	{
+		return m_oldControlPointNode;
+	}
+
+>>>>>>> feature/bezier
 	inline float getMin() const
 	{
 		return firstObject()->minValue<float>();
@@ -164,6 +224,8 @@ public:
 	static int quantization() { return s_quantization; }
 	static void setQuantization(int q) { s_quantization = q; }
 
+	void clampControlPoints(bool clampVertical=true);
+
 public slots:
 	void clear();
 	void objectDestroyed( jo_id_t );
@@ -173,6 +235,7 @@ public slots:
 
 private:
 	void cleanObjects();
+	void cleanControlPoints();
 	void generateTangents();
 	void generateTangents(timeMap::iterator it, int numToGenerate);
 	float valueAt( timeMap::const_iterator v, int offset ) const;
@@ -186,13 +249,28 @@ private:
 	objectVector m_objects;
 	timeMap m_timeMap;	// actual values
 	timeMap m_oldTimeMap;	// old values for storing the values before setDragValue() is called.
+<<<<<<< HEAD
+=======
+	timeMap m_tangents;	// slope at each point for calculating spline
+	controlPointTimeMap m_controlPoints;	// control points for calculating the bezier curve
+	controlPointTimeMap m_oldControlPoints;	// old values for storing the values before setDragValue() is called.
+	// m_oldControlPoints is similar to m_oldTimeMap, since the control points need to be dragged as well or something
+	timeMap::const_iterator m_oldControlPointNode;	// Which automation point was the control point connected to?
+	bool m_controlFlip; // If the lefthand control point is grabbed, the value must be flipped around the automation point
+
+	float m_controlPointDragOffset[2];
+
+>>>>>>> feature/bezier
 	float m_tension;
 	bool m_hasAutomation;
 	ProgressionTypes m_progressionType;
 
 	bool m_dragging;
+<<<<<<< HEAD
 	bool m_dragKeepOutValue; // Should we keep the current dragged node's outValue?
 	float m_dragOutValue; // The outValue of the dragged node's
+=======
+>>>>>>> feature/bezier
 
 	bool m_isRecording;
 	float m_lastRecordedValue;

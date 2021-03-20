@@ -51,6 +51,7 @@ class TimeLineWidget;
 class AutomationEditor : public QWidget, public JournallingObject
 {
 	Q_OBJECT
+<<<<<<< HEAD
 	Q_PROPERTY(QColor barLineColor MEMBER m_barLineColor)
 	Q_PROPERTY(QColor beatLineColor MEMBER m_beatLineColor)
 	Q_PROPERTY(QColor lineColor MEMBER m_lineColor)
@@ -60,6 +61,17 @@ class AutomationEditor : public QWidget, public JournallingObject
 	Q_PROPERTY(QBrush graphColor MEMBER m_graphColor)
 	Q_PROPERTY(QColor crossColor MEMBER m_crossColor)
 	Q_PROPERTY(QColor backgroundShade MEMBER m_backgroundShade)
+=======
+	Q_PROPERTY(QColor barLineColor READ barLineColor WRITE setBarLineColor)
+	Q_PROPERTY(QColor beatLineColor READ beatLineColor WRITE setBeatLineColor)
+	Q_PROPERTY(QColor lineColor READ lineColor WRITE setLineColor)
+	Q_PROPERTY(QColor vertexColor READ vertexColor WRITE setVertexColor)
+	Q_PROPERTY(QColor controlPointColor READ controlPointColor WRITE setControlPointColor)
+	Q_PROPERTY(QBrush scaleColor READ scaleColor WRITE setScaleColor)
+	Q_PROPERTY(QBrush graphColor READ graphColor WRITE setGraphColor)
+	Q_PROPERTY(QColor crossColor READ crossColor WRITE setCrossColor)
+	Q_PROPERTY(QColor backgroundShade READ backgroundShade WRITE setBackgroundShade)
+>>>>>>> feature/bezier
 public:
 	void setCurrentPattern(AutomationPattern * new_pattern);
 
@@ -80,6 +92,29 @@ public:
 		return "automationeditor";
 	}
 
+<<<<<<< HEAD
+=======
+	// qproperty access methods
+	QColor barLineColor() const;
+	void setBarLineColor(const QColor & c);
+	QColor beatLineColor() const;
+	void setBeatLineColor(const QColor & c);
+	QColor lineColor() const;
+	void setLineColor(const QColor & c);
+	QBrush graphColor() const;
+	void setGraphColor(const QBrush & c);
+	QColor vertexColor() const;
+	void setVertexColor(const QColor & c);
+	QColor controlPointColor() const;
+	void setControlPointColor(const QColor& c);
+	QBrush scaleColor() const;
+	void setScaleColor(const QBrush & c);
+	QColor crossColor() const;
+	void setCrossColor(const QColor & c);
+	QColor backgroundShade() const;
+	void setBackgroundShade(const QColor & c);
+
+>>>>>>> feature/bezier
 	enum EditModes
 	{
 		DRAW,
@@ -94,6 +129,7 @@ public slots:
 
 protected:
 	typedef AutomationPattern::timeMap timeMap;
+	typedef AutomationPattern::controlPointTimeMap controlPointTimeMap;
 
 	void keyPressEvent(QKeyEvent * ke) override;
 	void leaveEvent(QEvent * e) override;
@@ -141,10 +177,16 @@ private:
 	{
 		NONE,
 		MOVE_VALUE,
+<<<<<<< HEAD
 		ERASE_VALUES,
 		MOVE_OUTVALUE,
 		RESET_OUTVALUES,
 		DRAW_LINE
+=======
+		MOVE_CONTROL_POINT,
+		SELECT_VALUES,
+		MOVE_SELECTION
+>>>>>>> feature/bezier
 	} ;
 
 	// some constants...
@@ -216,14 +258,20 @@ private:
 
 	void drawCross(QPainter & p );
 	void drawAutomationPoint( QPainter & p, timeMap::iterator it );
+	void drawControlPoint( QPainter & p, controlPointTimeMap::iterator it, float key_y );
 	bool inBBEditor();
 
 	QColor m_barLineColor;
 	QColor m_beatLineColor;
 	QColor m_lineColor;
 	QBrush m_graphColor;
+<<<<<<< HEAD
 	QColor m_nodeInValueColor;
 	QColor m_nodeOutValueColor;
+=======
+	QColor m_vertexColor;
+	QColor m_controlPointColor;
+>>>>>>> feature/bezier
 	QBrush m_scaleColor;
 	QColor m_crossColor;
 	QColor m_backgroundShade;
@@ -281,6 +329,7 @@ private:
 	QAction* m_discreteAction;
 	QAction* m_linearAction;
 	QAction* m_cubicHermiteAction;
+	QAction* m_bezierAction;
 
 	QAction* m_flipYAction;
 	QAction* m_flipXAction;

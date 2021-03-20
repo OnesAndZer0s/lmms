@@ -1115,6 +1115,7 @@ void PianoRoll::drawDetuningInfo( QPainter & _p, const Note * _n, int _x,
 			// node to the other
 			switch (_n->detuning()->automationPattern()->progressionType())
 			{
+<<<<<<< HEAD
 				case AutomationPattern::DiscreteProgression:
 					_p.drawLine(old_x, pre_y, cur_x, pre_y);
 					_p.drawLine(cur_x, pre_y, cur_x, cur_y);
@@ -1123,6 +1124,17 @@ void PianoRoll::drawDetuningInfo( QPainter & _p, const Note * _n, int _x,
 				case AutomationPattern::LinearProgression:
 					_p.drawLine(old_x, pre_y, cur_x, cur_y);
 					break;
+=======
+			case AutomationPattern::DiscreteProgression:
+				_p.drawLine( old_x, old_y, pos_x, old_y );
+				_p.drawLine( pos_x, old_y, pos_x, pos_y );
+				break;
+			case AutomationPattern::CubicHermiteProgression: /* TODO */
+			case AutomationPattern::BezierProgression: /* TODO */
+			case AutomationPattern::LinearProgression:
+				_p.drawLine( old_x, old_y, pos_x, pos_y );
+				break;
+>>>>>>> feature/bezier
 			}
 
 			// If we are in the last node and there's a discrete jump, we draw a
